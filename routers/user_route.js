@@ -2,28 +2,16 @@
 const express = require('express');
 const route = express.Router();
 const userModel = require("../model/user_model");
+const userController = require("../controllers/user_controller");
+const authJwt = require('../helper/jwt');
 
 
+route.post('/login', userController.loggin);
 
-route.post('/', async (req, res) => {
-    const newUser = new userModel({
-        name: req.body.name,
-        mobile: req.body.major,
+route.post('/create', userController.createUser);
 
-    });
-    newUser.save().then((creatUser) => {
-        res.status(201).json(creatUser);
-    }
-    ).catch((err) => {
-        res.status(201).json({
-            messge: "error"
-        })
-    });
+route.get('/', userController.getAllUser);
+route.get('/:id', userController.getUser); 
+route.put('/update', authJwt,userController.updateUser);
 
-});
-route.get('/', async(req, res) => {
-    const usersList = await User.find();
-        res.status(200).json(usersList);
-
-})
- moule.exports = route;
+module.exports = route;
