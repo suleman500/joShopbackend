@@ -22,13 +22,20 @@ const productSchema = mongoose.Schema({
     required: true
     },
   
-    images: [{ type: String, }],
+    images: [{ type: String, 
+
+      default: []
+    }],
 
     category: {
         // هنا بنستخدم نوع خاص من المونقوز وهو objectId عشان نربط بين البرودكت والكتيجوري
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: 'Category' // هنا بنحدد اسم الموديل اللي بنربط بيه
+      ref: 'Category',
+     
+      
+      
+      // هنا بنحدد اسم الموديل اللي بنربط بيه
     },
     // هنا بنستخدم نوع خاص من المونقوز وهو objectId عشان نربط بين البرودكت والبراند
     numberInStock: {
@@ -53,7 +60,7 @@ const productSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: 'Store',
-    default: null
+   
   },
 
   // تقيم المنتج 

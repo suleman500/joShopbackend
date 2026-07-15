@@ -60,7 +60,7 @@ const storeSchema = new Schema({
 
     status:{
     type: String,
-    default: "pending"
+    default: "panding",
 }    
 
 });

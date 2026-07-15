@@ -25,21 +25,22 @@ connectDB();
 app.use(bodyparser.json());
 // عشان الاشي يصير على الانتر نت مثل الصور 
 // و الجوسن خليه استاتك  على السرفر و الجوين اسم الصوره 
+//app.use(`${apiPrefix}/uploads`, express.static(path.join(__dirname, "uploads")));
+
 app.use(`${apiPrefix}/uploads`, express.static(path.join(__dirname, "uploads")));
 
 
-
-
-/*app.use(
+app.use(
      authJwt.unless({
         path: [
              `${apiPrefix}/users/login`,
-           
+            `${apiPrefix}/users/create`,
+           `${apiPrefix}/products/creat`,
           
             // بضيف امشاء الحساب 
 ]
     })
-)*/
+)
 //app.use(authJwt);
 // هون بدي اقول لابليكشن انه يستخدم الهاندلر عشان يقدر يتعامل مع الاخطاء اللي بتصير في الابليكشن يعني اذا صار خطأ في الابليكشن يقدر يطلع رسالة الخطأ للمستخدم
 
@@ -49,7 +50,7 @@ app.use(`${apiPrefix}/products`,productRoute);
 app.use(`${apiPrefix}/users`,userRoute);
 app.use(`${apiPrefix}/categories`, CategoryRoute);
 app.use(`${apiPrefix}/stores`, StoreRoute);
-app.use(`${apiPrefix}/order`, orderRoute);
+app.use(`${apiPrefix}/orders`, orderRoute);
 app.use(errorHandler);
 // شو 
  

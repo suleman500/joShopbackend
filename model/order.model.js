@@ -1,12 +1,10 @@
-// models/order.model.js
 
-const mongoose = require('mongoose'); 
-const OrderItem = require('./orderItem');
 
-const orderSchema = mongoose.Schema({ 
+const mongoose = require('mongoose');
 
+const orderSchema = mongoose.Schema({
     user: {
-        type: mongoose.Schema.Types.ObjectId, 
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
 
@@ -14,7 +12,8 @@ const orderSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
-// حالت الطلب 
+
+  
     status: {
         type: String,
         default: 'pending',
@@ -32,12 +31,11 @@ const orderSchema = mongoose.Schema({
 
     items: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Order",
-        require: true
-    }]
+        ref: "OrderItem", 
+        required: true,
+    }],
+}, { timestamps: true }); 
 
-});
-
-const Order = mongoose.model('Order', orderSchema); 
+const Order = mongoose.model('Order', orderSchema);
 
 module.exports = Order;

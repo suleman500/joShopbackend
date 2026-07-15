@@ -1,19 +1,20 @@
 const express = require('express');
 const route = express.Router();
 const Store = require('../model/store.model');
-const {authJwt} = require('../helper/jwt');
+const authJwt = require('../helper/jwt'); 
 const storeController = require('../controllers/store_controller');
 
+route.get('/mystore', authJwt, storeController.getMyStore);
+route.get('/pending-requests', authJwt, storeController.getPendingStores);
+route.put('/update-status/:storeId', authJwt, storeController.updateStoreStatus);
+route.get('/', authJwt, storeController.getAllStores);
+
+route.get('/by-product/:productId', authJwt, storeController.getStoreByProductId);
 
 
 
-route.get('/', storeController.getAllStores);
-route.get('/:id', storeController.getStoreById);
-route.post('/createStore', storeController.createdStore);
-route.put('/updateStore', storeController.updateStore);
-
-//route.post('/test', storeController.testCreateStore);
-
+route.get('/:id', authJwt, storeController.getStoreById);
+route.post('/createStore', authJwt, storeController.createStore);
+route.put('/updateStore', authJwt, storeController.updateStore);
 
 module.exports = route;
-console.log('✅ store_route.js loaded');
