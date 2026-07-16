@@ -27,7 +27,7 @@ app.use(bodyparser.json());
 // و الجوسن خليه استاتك  على السرفر و الجوين اسم الصوره 
 //app.use(`${apiPrefix}/uploads`, express.static(path.join(__dirname, "uploads")));
 
-app.use(`${apiPrefix}/uploads`, express.static(path.join(__dirname, "uploads")));
+//app.use(`${apiPrefix}/uploads`, express.static(path.join(__dirname, "uploads")));
 
 
 app.use(
