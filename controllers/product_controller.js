@@ -91,41 +91,51 @@ const getProductById = async (req, res) => {
 
 // تضيف منتج جديد
 const createProduct = async (req, res) => {
-    try {
-        const userId = req.user.id;
-        const store = await Store.findOne({ vendorId: userId });
-        if (!store) {
-            return res.status(400).json({
-                success: false,
-                message: "is not Store"
-            });
-        }
-        const newProduct = new Product({
-            name: req.body.name,
-            description: req.body.description,
-            price: req.body.price,
-            numberInStock: req.body.numberInStock,
-            storeId: store._id,
-            image: req.body.image,
-            images: req.body.images,
-            category: req.body.category,
-        });
-        const savedProduct = await newProduct.save();
-        await Store.findByIdAndUpdate(store._id, {
-            $inc: { productsCount: 1 }
-        });
-        res.status(201).json({
-            success: true,
-            product: savedProduct,
-            message: "the product is created successfully"
-        });
-    } catch (err) {
-        res.status(400).json({
-            success: false,
-            error: err.message,
-            message: "the product cannot be created"
-        });
+  try {
+    const userId = req.user.id;
+    const store = await Store.findOne({ vendorId: userId });
+    if (!store) {
+      return res.status(400).json({
+        success: false,
+        message: "ليس لديك متجر"
+      });
     }
+
+    // الصورة الرئيسية (قادمة من Cloudinary)
+    const imageUrl = req.body.image; // يجب أن تكون رابطاً من Cloudinary
+    
+    // الصور الإضافية (مصفوفة روابط)
+    const imagesUrls = req.body.images || [];
+
+    const newProduct = new Product({
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      numberInStock: req.body.numberInStock,
+      storeId: store._id,
+      image: imageUrl,      // تخزين الرابط الكامل
+      images: imagesUrls,   // تخزين مصفوفة الروابط
+      category: req.body.category,
+    });
+
+    const savedProduct = await newProduct.save();
+
+    await Store.findByIdAndUpdate(store._id, {
+      $inc: { productsCount: 1 }
+    });
+
+    res.status(201).json({
+      success: true,
+      product: savedProduct,
+      message: "تم إنشاء المنتج بنجاح"
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      error: err.message,
+      message: "تعذر إنشاء المنتج"
+    });
+  }
 };
 
 // تبديل حالة المفضلة إضافة أو إزالة)

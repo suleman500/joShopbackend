@@ -29,14 +29,32 @@ route.get('/productcategoryId/:categoryId', authJwt, productController.getProduc
 
 route.get('/by-store/:storeId', authJwt, productController.getProductsByStoreId);
 
-route.post('/uploades', upload.single("image"), (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: 'لم يتم رفع صورة' });
-    }
-    res.json({
-        image: req.file.filename,
-    });
+route.post('/upload', authJwt, upload.single('image'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'لم يتم رفع صورة' });
+  }
+  // req.file.path يحتوي على رابط الصورة في Cloudinary
+  res.json({
+    success: true,
+    imageUrl: req.file.path,
+    publicId: req.file.filename, // المعرف العام في Cloudinary
+  });
 });
+
+route.post('/uploads', authJwt, upload.array('images', 5), (req, res) => {
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).json({ error: 'لم يتم رفع أي صورة' });
+  }
+  const uploadedFiles = req.files.map(file => ({
+    url: file.path,
+    publicId: file.filename,
+  }));
+  res.json({
+    success: true,
+    files: uploadedFiles,
+  });
+});
+
 
 //route.post('/uploads',productController.)
 
